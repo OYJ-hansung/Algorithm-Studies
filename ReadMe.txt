@@ -1,1 +1,1 @@
-Algorithm Studies
+Algorithm Studies.
