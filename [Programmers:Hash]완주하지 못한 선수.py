@@ -17,4 +17,4 @@ def solution(participant, completion):
         cnt[p] += 1
     for c in completion:
         cnt[c] -= 1
-    return list(x for x,y in cnt.items() if y == 1).pop();
+    return list(x for x,y in cnt.items() if y == 1).pop()
