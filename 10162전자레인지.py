@@ -1,7 +1,5 @@
 import sys
 
-# A - 300s, B - 60s, C - 10s
-
 T = int(sys.stdin.readline())
 graph = [300, 60, 10]
 answer = list()

@@ -7,3 +7,6 @@ if 0 in N and sum(N)%3 == 0:
         print(idx, end = '')
 else:
     print(-1)
+
+
+    
