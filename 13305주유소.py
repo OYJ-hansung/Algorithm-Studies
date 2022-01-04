@@ -1,25 +1,18 @@
 import sys
-
 N = int(sys.stdin.readline())
-length = list(map(int, sys.stdin.readline().split()))
-cost = list(map(int, sys.stdin.readline().split()))
-min_cost = cost[0]
-len_sum = length[0]
-
-idx = 1
-answer = -1
-
-while idx <=N-2:
-    if cost[idx] <= min_cost:
-        answer +=min_cost*len_sum
-        len_sum = 0
-        idx +=1
-        if idx == N-2:
-            len_sum = length[-1]
-            answer +=min_cost*len_sum
-        min_cost = cost[idx]
+roads = list(map(int, sys.stdin.readline().split()))
+stations = list(map(int, sys.stdin.readline().split()))
+current_station = stations[0]
+current_roads_len = roads[0]
+answer = 0
+for idx in range(N-1):
+    if idx == N-2:
+        answer += current_station * current_roads_len
+        print(answer)
+        break
+    if current_station > stations[idx+1]:
+        answer += current_station * current_roads_len
+        current_station = stations[idx+1]
+        current_roads_len = roads[idx+1]
     else:
-        len_sum += length[idx-1]
-        idx +=1
-
-print(answer)
+        current_roads_len+=roads[idx+1]
