@@ -8,6 +8,13 @@ while True:
     graph.append([a, b, c])
 for idx in graph:
     a, b, c = idx
-    answer = a * (c//b) + (c - (b * (c//b)))
+    answer = a * (c//b)
+    if c - (b * (c//b)) > a:
+        answer += a
+    else:
+        answer += c - (b * (c//b))
     print('Case {0}:'.format(i), answer)
     i +=1
+
+
+        

@@ -13,3 +13,4 @@ while len(graph) != 1:
     result += a+b
     heapq.heappush(graph, a+b)
 print(result)
+
