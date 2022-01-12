@@ -1,23 +1,22 @@
 import sys
 
 N = int(sys.stdin.readline())
-count = 0
+if N == 1:
+    print(0)
+else:
+    mem = [0]* (N+1)
+    mem[1], mem[2]= 0, 1
 
-while N!=1:
-    if N%9 == 0:
-        N = int(N/9)
-        count +=2
-    if N%4 == 0:
-        N = int(N/4)
-        count +=2
-    if N%3==0:
-        N = int(N/3)
-        count +=1
-    elif N%2==0 and (N-1)%3 !=0:
-        N = int(N/2)
-        count +=1
-    else:
-        N -=1
-        count +=1
-    
-print(count)
+    if N >=3:
+        for idx in range(3, N+1):
+            if idx%2 == 0 and idx%3 ==0:
+                mem[idx] = min(mem[int(idx/2)]+1, mem[int(idx/3)]+1)
+            elif idx%3 == 0:
+                mem[idx] = min(mem[int(idx/3)]+1, mem[idx-1]+1)   
+            elif idx%2 == 0:
+                mem[idx] = min(mem[int(idx/2)]+1, mem[idx-1]+1)
+            else:
+                mem[idx] = mem[idx-1]+1
+
+    print(mem[N])
+
