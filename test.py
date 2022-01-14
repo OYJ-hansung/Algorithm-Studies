@@ -1,7 +1,3 @@
-memorization = [9]*40
-print(memorization)
-memorization[3] = 6
-print(memorization)
-# for idx in memorization:
-#     if idx != 9:
-#         print(idx)
+a, b, c = 1, 2, 3
+maximation = max(a,b,c)
+print(maximation)
