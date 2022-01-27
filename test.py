@@ -1,10 +1,9 @@
-num_list = [1, 5, 7, 15, 16, 22, 28, 29]
-
-def get_odd_num(num_list):
-    answer = []
-    for idx in num_list:
-            if idx%2!=0:
-                answer.append(idx)
-    return answer
-    
-print(get_odd_num(num_list))
+a = '123'
+b = ['123456', '123123']
+length = len(a)
+if a in b[:length]:
+    print('True')
+    print(b[:length])
+else:
+    print('False')
+    print(b[:length])
