@@ -1,41 +1,30 @@
 import sys
-from collections import Counter
-
-def binarySearch(array, target, left, right):
-    middle_idx = (left+right)//2
-    print(middle_idx)
-    middle = array[middle_idx]
-    if target == middle:
-        return True
-    elif middle > target:
-        binarySearch(array, target,left,middle_idx-1)
-    elif middle < target:
-        binarySearch(array, target,middle_idx+1,right)
-    else: 
-        return False
-
+from collections import defaultdict
 
 N = int(sys.stdin.readline())
 graph = [list(map(int,sys.stdin.readline().split()))for _ in range(N)]
 graph = list(map(list, zip(*graph)))
 A, B, C, D = graph
 
-AB_summation = []
-for a in A:
-    for b in B:
-        AB_summation.append(a+b)
 
-AB_Counter = Counter(AB_summation)
-AB_Counter_list = list(AB_Counter.keys())
-AB_Counter_list.sort()
+# A + B 배열과
+# C + D 배열로 나누기 -> 시간 복잡도 줄이기 위해 (N^4 -> N^2)
+first = defaultdict(int)
+first = {}
+for i in range(N):
+    for j in range(N):
+        A_B = A[i] + B[j]
+        # first[A_B] += 1
+        first[A_B] = first.get(A_B, 0) + 1
+
 
 answer = 0
-for c in C:
-    for d in D:
-        Flag = binarySearch(AB_Counter_list, -(c+d), AB_Counter_list[0], AB_Counter_list[-1])
-        if Flag == False:
-            continue
-        else:
-            answer += AB_Counter[-(c+d)]
+for i in range(N):
+    for j in range(N):
+        C_D = C[i] + D[j]
+        # (A + B) + (C + D) == 0일 때 key값에 대한 value만큼 더해준다.
+        # (C + D)의 -1을 곱한값이 first에 있으면 A + B + C + D가 0이다.
+        if first.get(-C_D):
+            answer += first.get(-C_D)
 
 print(answer)
