@@ -1,9 +1,12 @@
 import sys
+from pprint import pprint
 sys.setrecursionlimit(10**7)
 
 row, col = map(int, sys.stdin.readline().split())
 graph = [list(map(int, sys.stdin.readline().split()))for _ in range(row)]
 answer = 0
+dp = [[0 for _ in range(col)]for _ in range(row)]
+print(dp)
 
 def DFS(graph,x, y, higher_level):
     global answer
@@ -14,12 +17,12 @@ def DFS(graph,x, y, higher_level):
         answer +=1
         return True
 
-    lower_level = graph[x][y]
+    
     if graph[x][y]<higher_level:
-        graph[x][y] = higher_level
+        lower_level = graph[x][y]
         DFS(graph, x, y+1, lower_level)
-        DFS(graph, x, y-1, lower_level)
         DFS(graph, x+1, y, lower_level)
+        DFS(graph, x, y-1, lower_level)
         DFS(graph, x-1, y, lower_level)
     return False
 
