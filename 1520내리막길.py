@@ -1,30 +1,30 @@
 import sys
-from pprint import pprint
 sys.setrecursionlimit(10**7)
 
 row, col = map(int, sys.stdin.readline().split())
 graph = [list(map(int, sys.stdin.readline().split()))for _ in range(row)]
 answer = 0
-dp = [[0 for _ in range(col)]for _ in range(row)]
-print(dp)
+dp = [[-1 for _ in range(col)]for _ in range(row)]
 
 def DFS(graph,x, y, higher_level):
     global answer
-    if x<0 or y<0 or x>=row or y>=col:
-        return False
 
-    if x == (row-1) and y == (col-1) and graph[x][y]<higher_level:
-        answer +=1
-        return True
+    if x == (row-1) and y == (col-1) and graph[x][y]<higher_level: # target arrived
+        dp[x][y] = 1
+        return 1
 
-    
-    if graph[x][y]<higher_level:
-        lower_level = graph[x][y]
-        DFS(graph, x, y+1, lower_level)
-        DFS(graph, x+1, y, lower_level)
-        DFS(graph, x, y-1, lower_level)
-        DFS(graph, x-1, y, lower_level)
-    return False
+    if dp[x][y] != -1:
+        return dp[x][y]
 
-DFS(graph, 0, 0, 10001)
-print(answer)
+    answer = 0
+    for dx, dy in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+        nx = x + dx
+        ny = y + dy
+        if 0<=nx<row and 0<=ny<col:
+            if graph[nx][ny]<graph[x][y]: # if its lower
+                answer += DFS(graph, nx, ny, graph[x][y]) # recursive
+
+    dp[x][y] = answer
+    return dp[x][y]
+
+print(DFS(graph, 0, 0, 10001))
