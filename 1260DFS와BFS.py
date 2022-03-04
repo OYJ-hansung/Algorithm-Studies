@@ -1,26 +1,42 @@
 import sys
+from collections import deque
+dots, lines, start = map(int, sys.stdin.readline().split())
+graph = [[]for _ in range(dots+1)]
 
-dot, line, start = map(int, sys.stdin.readline().split())
-graph = [list(map(int, sys.stdin.readline().split()))for _ in range(line)]
-graph2 = [[]for _ in range(dot+1)]
-for dot1, dot2 in graph:
-    if dot1 not in graph2[dot2]:
-        graph2[dot2].append(dot1)
-    if dot2 not in graph2[dot1]:
-        graph2[dot1].append(dot2)
+for idx in range(lines):
+    dot1, dot2 = map(int, sys.stdin.readline().split())
+    graph[dot1].append(dot2)
+    graph[dot2].append(dot1)
 
-for idx in graph2:
+for idx in graph:
     idx.sort()
 
+def BFS(graph, start):
+    visited = [False]*(dots+1)
+    visited[start] = True
+    q = deque()
+    q.append(start)
 
-visited = [False]*(dot+1)
+    while q:
+        dot = q.popleft()
+        print(dot, end=' ')
+        for idx in graph[dot]:
+            if not visited[idx]:
+                visited[idx] = True
+                q.append(idx)
 
-def DFS(graph, visited, dot):
+
+
+def DFS(graph, dot, visited):
     visited[dot] = True
-    print(dot, end=' ')
+    DFS_list.append(dot)
 
     for idx in graph[dot]:
         if not visited[idx]:
-            DFS(graph, visited, idx)
+            DFS(graph, idx, visited)
 
-DFS(graph2, visited, start)
+DFS_list = []
+visited = [False]*(dots+1)
+DFS(graph, start, visited)
+print(* DFS_list)
+BFS(graph, start)
