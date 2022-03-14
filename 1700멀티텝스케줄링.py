@@ -1,38 +1,30 @@
 import sys
-from bisect import bisect_left
 
-def intersect(a, b):
-    return list(set(a) & set(b))
-def subtract(a, b):
-    return list(set(a) - set(b))
-
-multi_tab_num, K = map(int, sys.stdin.readline().split())
-device_order = list(map(int, sys.stdin.readline().split()))
-multi_tab = []
+N, K = map(int, sys.stdin.readline().split())
+schedule = list(map(int, sys.stdin.readline().split()))
+multitab = []
 answer = 0
 
-for idx in range(K):
-    if device_order[idx] not in multi_tab and len(multi_tab) <multi_tab_num: # 전자기기가 꽂혀있지 않으며, 아직 다 차 있지 않았을떄
-        multi_tab.append(device_order[idx])
-    elif device_order[idx] not in multi_tab and len(multi_tab) == multi_tab_num: # 전자기기가 꽂혀있지 않으며, 다 차 있을떄
-        answer +=1
-        if idx == K-1:
-            break
-        elif len(device_order[idx+1:]) < multi_tab_num:
-            list_behind = device_order[idx+1:]
-        else:
-            list_behind = device_order[idx+1:idx+1+multi_tab_num]
-
-        intersect_multitab = intersect(list_behind,multi_tab)
-        if len(intersect_multitab) == multi_tab_num: #3개가 다 있어
-            target_index = bisect_left(multi_tab, list_behind[0])
-            print(target_index)
-            del multi_tab[target_index]
-            multi_tab.append(device_order[idx])
-        else:
-            subtract_multitab = subtract(multi_tab, list_behind)
-            target_index = bisect_left(multi_tab, subtract_multitab[0])
-            del multi_tab[target_index]
-            multi_tab.append(device_order[idx])
+for idx in range(K): # 스케줄을 처음부터 끝까지 돈다.
+    if schedule[idx] in multitab:
+        continue
+    elif len(multitab) < N:            # 멀티탭에 여유가 있다면
+        multitab.append(schedule[idx])
+    
+    else:                                # 멀티탭에 여유가 없다면
+            current_idx = -1
+            target_idx = 0
+            left_list = schedule[idx+1:]
+            for multitab_device in multitab:
+                if multitab_device in left_list: # 스케줄에서 다시 사용된다면..
+                    if left_list.index(multitab_device) > current_idx:
+                        current_idx = left_list.index(multitab_device)
+                        target_idx = multitab.index(multitab_device)
+                else:                            # 스케줄에서 다시 사용되지 않는다면..
+                    target_idx = multitab.index(multitab_device)                    
+                    break
+            multitab[target_idx] = schedule[idx]
+            answer +=1
 
 print(answer)
+
